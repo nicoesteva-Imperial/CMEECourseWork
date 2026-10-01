@@ -1,0 +1,10 @@
+
+
+========================================
+           ACTUAL ANSWERS
+========================================
+1. Total lines in file: 27
+2. Print starting from second line: Executed successfully (Output omitted from text file due to large size).
+3. Total sequence length (bases): 1836
+4. Number of 'ATGC' sequence matches: 0
+5. Computed AT/GC Ratio: 4.16619718309859154929
