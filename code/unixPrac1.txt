@@ -1,0 +1,28 @@
+#1 Count lines in each FASTA file
+wc -l ../data/fasta/*.fasta
+# Counts the lines in each fasta file. Technically it counts the newline
+# characters at the end of each line.
+
+#2 Print the E. coli sequence without the header
+tail -n +2 ../data/fasta/e_coli.fasta
+# Prints the file starting from line 2. The +2 means "start at line 2", not
+# "last 2 lines". Line 1 is just the header (the line starting with >), so this
+# leaves only the actual sequence.
+
+#3 Count the E. coli sequence length
+tail -n +2 ../data/fasta/e_coli.fasta | tr -d '\n\r' | wc -c
+# Gets rid of the header, deletes the line breaks, then counts the characters
+# left. That gives the length of the sequence, including the ambiguous letters
+# like N, R, Y, M and W.
+
+#4 Count occurrences of ATGC in the E. coli sequence
+tail -n +2 ../data/fasta/e_coli.fasta | tr -d '\n\r' | grep -o ATGC | wc -l
+# Squashes the sequence into one long line so an ATGC split across two lines
+# still gets found. grep -o spits out every ATGC it finds on its own line, and
+# wc -l counts them. So it's the total number of ATGCs, not the number of lines
+# that have one.
+
+#5 Calculate the AT/GC ratio of the E. coli sequence
+echo "$(tail -n +2 ../data/fasta/e_coli.fasta | grep -o '[AT]' | wc -l) / $(tail -n +2 ../data/fasta/e_coli.fasta | grep -o '[GC]' | wc -l)" | bc -l
+# Counts up all the A's and T's, and all the G's and C's, then divides A+T by
+# G+C to get the ratio.
