@@ -21,7 +21,7 @@ for each row, numbered from line 2:
         tidy each field (strip spaces, match names ignoring case)
         check each field in turn; note every problem found
     if there are no problems:
-        add the cleaned row to accepted
+        add the cleaned row to acceptedgode .giti   
         remember its ID
     otherwise:
         add (line number, ID, reasons) to issues
