@@ -113,4 +113,43 @@ p <- ggplot(PlotRichness, aes(x = Cultivation, y= MeanRichness)) +
 
 ggsave("results/pound_hill_plot_richness.pdf", p, width = 6, height = 4.5)
 
-Interpretation:
+#Interpretation:
+#Based on the plot created, the May cultivation timing has the highest mean 
+# species richness, while March and October timings have similar mean species 
+# richness, with march being slighlty higher. The variability between the 
+# different timings is to be noted as the timings seem to have similar 
+# range width of mean spcies richness (minimum of ~ 3.5 and max of ~4). However, 
+# due to the small amount of plots per treatment (4 plots)  this is not enough
+# to determine that timing is the sole source of mean species richness. 
+# The plots could also be positioned differently geographically, so the range 
+# width could be also due to the inherent ecological surroundings of the plot
+# and less so with the timing.
+
+# Quadrat level: sum all counts in each quadrat
+QuadratAbundance <- MyWrangledData |>
+    group_by(Cultivation, Block, Plot, Quadrat) |>
+    summarise(Abundance = sum(Count), .groups = "drop")
+
+# Plot level: mean quadrat abundance per plot
+PlotAbundance <- QuadratAbundance |>
+    group_by(Cultivation, Block, Plot) |>
+    summarise(MeanAbundance = mean(Abundance), .groups = "drop")
+
+if (nrow(PlotAbundance) != 12) {
+    stop(paste("Expected 12 plots, got", nrow(PlotAbundance)))
+}
+
+print(PlotAbundance)
+write.csv(PlotAbundance, "results/pound_hill_plot_abundance.csv", row.names = FALSE)
+
+# Figure: same design as the richness plot
+p_abund <- ggplot(PlotAbundance, aes(x = Cultivation, y = MeanAbundance)) +
+    geom_point(size = 3, alpha = 0.7,
+               position = position_jitter(width = 0.1, height = 0, seed = 1)) +
+    stat_summary(fun = mean, geom = "crossbar", width = 0.4, colour = "grey40") +
+    labs(x = "Cultivation month",
+         y = "Mean number of individuals per quadrat (plot mean)",
+         title = "Plant abundance at Pound Hill by cultivation timing")+
+    theme_bw()
+
+ggsave("results/pound_hill_plot_abundance.pdf", p_abund, width = 6, height = 4.5)
