@@ -4,3 +4,9 @@ __pycache__/
 results/
 __pycache__/
 sandbox/
+
+# Generated outputs (recreated by the scripts)
+results/TreeHts.csv
+results/*_treeheights.csv
+results/pound_hill_plot_*.csv
+results/pound_hill_plot_*.pdf
