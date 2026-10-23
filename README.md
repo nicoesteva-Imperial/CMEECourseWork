@@ -51,3 +51,41 @@ Used as a tutor to explain the starter code and metadata, explain errors,
 and review my code. It also wrote some code directly as examples that was then edited. it helped a lot with the Counter function and helped laying out the logic and syntax of the code.
 I checked suggestions by running small test rows in sandbox/ and comparing
 them against results I had worked out by hand from the metadata.
+
+## Tree heights
+
+### TreeHeight.R (fixed input)
+Run from the project root:
+    Rscript code/TreeHeight.R
+- Input: `data/trees.csv` (supplied, unchanged)
+- Output: `results/TreeHts.csv` (regenerated on each run)
+- Checks in the script: [list the 5 input checks]
+- Verified: [the row 1 calculation you checked], toy 8 m at 45° = 8 m,
+  output has 120 data rows, rerun replaces rather than appends.
+
+### get_TreeHeight.R (command-line input)
+Run from the project root:
+    Rscript code/get_TreeHeight.R data/trees.csv
+- Output: `results/<input-basename>_treeheights.csv`
+- Errors for: [no argument, extra arguments, missing file, wrong header]
+- Limitation: [what happens with two inputs that share a basename]
+
+### Tests
+    bash code/run_get_TreeHeight.sh
+- [What the 6 checks cover; the toy CSV in `sandbox/`]
+
+### Fixed vs command-line input
+[Your Part 4 answer: what stays the same, what changes]
+
+## Pound Hill species richness
+
+Run from the project root:
+    Rscript code/pound_hill_analysis.R
+- Inputs: `data/pound_hill_data.csv`, `data/pound_hill_meta_data.csv` (unchanged)
+- Outputs: `results/pound_hill_plot_richness.csv` and `.pdf`,
+  plus the abundance extension: `results/pound_hill_plot_abundance.csv` and `.pdf`
+- Blanks converted to zeros because [metadata justification]
+- Checks: [counts numeric, non-negative, no NA; 41 species, 59 quadrats, 12 plots]
+- Data note: [the trailing spaces you found in species names]
+- Rerun check: [what you did and saw]
+- Interpretation: see the comments at the end of the script.
