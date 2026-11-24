@@ -1,6 +1,6 @@
 # Load data: everything as text, blank cells become NA
 observations <- read.csv(
-  "data/bootcamp_observations/bootcamp_observations.csv",
+  "data/bootcamp_observations.csv",
   colClasses = "character", na.strings = "", check.names = FALSE
 )
 print(observations)
@@ -30,8 +30,6 @@ cat("No duplicates:     ", check4, "\n")
 which(duplicated(observations))          # which row? -> 4
 observations[!duplicated(observations), ] # data with the copy removed
 
-
-#Claude answer:
 read_observations <- function(path) {
   obs <- read.csv(path, colClasses = "character", na.strings = "", check.names = FALSE)
 
@@ -56,23 +54,15 @@ read_observations <- function(path) {
   obs
 }
 
-obs <- read_observations("data/bootcamp_observations/bootcamp_observations.csv")
+obs <- read_observations("data/bootcamp_observations.csv")
 str(obs)
 
-  # tryCatch runs the code; if it errors, the error message is caught
-  # instead of ending the script, so we can check WHY it failed.
   msg <- tryCatch(
-    read_observations("data/bootcamp_observations/bootcamp_observations_invalid.csv"),
+    read_observations("data/bootcamp_observations_invalid.csv"),
     error = function(e) conditionMessage(e)
   )
   cat("Invalid file rejected with:", msg, "\n")
 
-# ===================================================================
-# summarise_observations(data)
-# Takes the validated observations and returns one row per site with:
-#   total_known   = sum of the counts we actually have (NA if none)
-#   missing_count = how many counts are missing
-# ===================================================================
 
 summarise_observations <- function(data) {
   # `data` is an empty box, filled with whatever table you pass in
@@ -132,13 +122,9 @@ summarise_observations <- function(data) {
 }
 
 
-# ===================================================================
-# Using it
-# ===================================================================
-
 # Load and validate both files with the function from yesterday.
-ordinary <- read_observations("data/bootcamp_observations/bootcamp_observations.csv")
-boundary <- read_observations("data/bootcamp_observations/bootcamp_observations_boundary.csv")
+ordinary <- read_observations("data/bootcamp_observations.csv")
+boundary <- read_observations("data/bootcamp_observations_boundary.csv")
 
 # Q2: rbind stacks the tables on top of each other (r = rows).
 # Same columns in both, so you get one longer table (8 rows).
@@ -161,7 +147,11 @@ cat("All summary checks passed.\n")
 
 # ---- Figure: known totals per site ----
 dir.create("results", showWarnings = FALSE)   # make results/ if it doesn't exist
-png("results/known_totals.png", width = 800, height = 600)  # start drawing into a file
+
+write.csv(summary, "results/observations_by_site.csv", row.names = FALSE)  # save the summary table as a CSV
+
+pdf("results/observations_by_site.pdf", width = 7, height = 5)  # start drawing into a file
+
 
 # barplot draws nothing for NA, so site C appears as a gap rather than a zero bar.
 # ylim sets the y-axis range; na.rm = TRUE lets max() ignore C's NA.
@@ -181,3 +171,7 @@ mtext(paste("Sites with every count missing (no bar, not zero):",
       side = 1, line = 4, cex = 0.9)
 
 invisible(dev.off())   # close the file, which saves the image
+
+
+# The figure shows the bar plot of known counts per site. Site A has the biggest known total, followed by sites B and D, while site C has no known counts. Site C appears as a gap instead of a zero bar because all counts for that site are missing; plotting it as zero would falsely suggest that there were observations made and none were found, which is not the case. These data cannot tell us exactly how many dates each site was visited or how many total observations were made (although we know that the sites were visited only once or twice), which could affect the interpretation of the totals.
+
