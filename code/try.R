@@ -14,7 +14,8 @@ popn <- rnorm(50)
 
 hist(popn)
 
-resuly <- vector("list", 15) #Preallocate/initialize
+result <- lapply(1:15, function(i) try(doit(popn), FALSE))
+result <- vector("list", 15) #Preallocate/initialize
 for (i in 1:15) {
     result[[i]] <- try(doit(popn), FALSE)
 }
