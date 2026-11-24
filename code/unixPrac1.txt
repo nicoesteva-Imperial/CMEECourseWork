@@ -2,6 +2,11 @@
 wc -l ../data/fasta/*.fasta
 # Counts the lines in each fasta file. Technically it counts the newline
 # characters at the end of each line.
+# The numbered FASTA files 407228326.fasta and 407228412.fasta do not have
+# a final newline. wc -l therefore reports only their newline characters
+# and is one less than the number of records or sequence lines. This is not
+# a sequence-length issue; use splitlines() or a byte check to count them
+# without assuming a terminal newline.
 
 #2 Print the E. coli sequence without the header
 tail -n +2 ../data/fasta/e_coli.fasta

@@ -22,7 +22,10 @@ fi
 
 # results
 outdir="$(cd "$(dirname "$0")" && pwd)/../results"
-mkdir -p "$outdir" || exit 1
+if ! mkdir -p "$outdir"; then
+    echo "Error: cannot create output directory '$outdir'" >&2
+    exit 1
+fi
 output="$outdir/$(basename "$1").txt"
 
 # tr without -s keeps empty fields;
