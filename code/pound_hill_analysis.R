@@ -32,7 +32,7 @@ MyData[MyData == ""] <- 0
 # Convert the raw matrix to a data frame --------------------------------
 
 TempData <- as.data.frame(MyData[-1, ], stringsAsFactors = FALSE)
-colnames(TempData) <- MyData[1, ]
+colnames(TempData) <- trimws(MyData[1, ])
 rownames(TempData) <- NULL
 
 
@@ -114,16 +114,15 @@ p <- ggplot(PlotRichness, aes(x = Cultivation, y= MeanRichness)) +
 ggsave("results/pound_hill_plot_richness.pdf", p, width = 6, height = 4.5)
 
 #Interpretation:
-#Based on the plot created, the May cultivation timing has the highest mean 
-# species richness, while March and October timings have similar mean species 
-# richness, with march being slighlty higher. The variability between the 
-# different timings is to be noted as the timings seem to have similar 
-# range width of mean spcies richness (minimum of ~ 3.5 and max of ~4). However, 
-# due to the small amount of plots per treatment (4 plots)  this is not enough
-# to determine that timing is the sole source of mean species richness. 
-# The plots could also be positioned differently geographically, so the range 
-# width could be also due to the inherent ecological surroundings of the plot
-# and less so with the timing.
+# Based on the plot-level MeanRichness values in
+# results/pound_hill_plot_richness.csv, May has the highest treatment mean
+# (9.65), followed by March (7.808) and October (7.613). Across the four plots
+# per treatment, March ranges from 6.333 to 10.000 (spread 3.667), May from
+# 7.400 to 11.600 (spread 4.200), and October from 6.400 to 10.250
+# (spread 3.850). These are ranges of plot means, not quadrat-level ranges.
+# With only four plots per treatment, these descriptive differences do not
+# establish cultivation timing as the sole cause: plots may differ in position
+# and other ecological conditions.
 
 # Quadrat level: sum all counts in each quadrat
 QuadratAbundance <- MyWrangledData |>
