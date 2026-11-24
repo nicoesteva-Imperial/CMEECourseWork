@@ -1,108 +1,52 @@
 #!/usr/bin/env python3
 
-"""Some functions exemplifying the use of control statements"""
+"""Checks for the small functions in control_flow.py."""
 
-__author__ = "Your name (your@email.address)"
-__version__ = "0.0.1"
-
-import sys
-
-#!/usr/bin/env python3
-
-"""Some functions exemplifying the use of control statements"""
-
-__author__ = "Your Name (Your.Name@your.email.address)"
-__version__ = "0.0.1"
-
-import sys
-import doctest  # Import the doctest module
+from control_flow import (
+    count_above,
+    even_or_odd,
+    find_all_primes,
+    is_prime,
+    largest_divisor_five,
+)
 
 
-def even_or_odd(x=0):
-    """Find whether a number x is even or odd.
+# Normal cases: representative even and odd integers.
+assert even_or_odd(10) == "10 is Even!"
+assert even_or_odd(5) == "5 is Odd!"
 
-    >>> even_or_odd(10)
-    '10 is Even!'
+# Edge cases: zero and a negative integer remain valid inputs.
+assert even_or_odd(0) == "0 is Even!"
+assert even_or_odd(-2) == "-2 is Even!"
 
-    >>> even_or_odd(5)
-    '5 is Odd!'
+# Failure case: the function accepts integers, not text.
+try:
+    even_or_odd("10")
+except TypeError:
+    pass
+else:
+    raise AssertionError("A non-integer input was accepted")
 
-    in case of negative numbers, the positive is taken:
-    >>> even_or_odd(-2)
-    '-2 is Even!'
+# The divisor function returns an integer or None, not display text.
+assert largest_divisor_five(120) == 5
+assert largest_divisor_five(8) == 4
+assert largest_divisor_five(7) is None
 
-    """
-    # Define function to be tested
-    if x % 2 == 0:
-        return f"{x} is Even!"
-    return f"{x} is Odd!"
+# Integers below 2 are not prime; 2 is the first prime.
+assert not is_prime(-1)
+assert not is_prime(0)
+assert not is_prime(1)
+assert is_prime(2)
+assert is_prime(3)
+assert not is_prime(4)
+assert find_all_primes(1) == []
+assert find_all_primes(10) == [2, 3, 5, 7]
 
+# A normal biological example.
+assert count_above([8, 12, 10, 15], 10) == 2
 
-def main(argv):
-    print(even_or_odd(22))
-    print(even_or_odd(33))
-    return 0
+# Values immediately below, at and above the threshold expose > versus >=.
+assert count_above([9, 10, 11], 10) == 1
 
-
-if __name__ == "__main__":
-    status = main(sys.argv)
-
-doctest.testmod()  # To run with embedded tests
-
-
-def largest_divisor_five(x=120):
-    """Find which is the largest divisor of x among 2,3,4,5."""
-    largest = 0
-    if x % 5 == 0:
-        largest = 5
-    elif x % 4 == 0:  # means "else, if"
-        largest = 4
-    elif x % 3 == 0:
-        largest = 3
-    elif x % 2 == 0:
-        largest = 2
-    else:  # When all other (if, elif) conditions are not met
-        return (
-            "No divisor found for %d!" % x
-        )  # Each function can return a value or a variable.
-    return "The largest divisor of %d is %d" % (x, largest)
-
-
-def is_prime(x=70):
-    """Find whether an integer is prime."""
-    for i in range(2, x):  #  "range" returns a sequence of integers
-        if x % i == 0:
-            print(
-                "%d is not a prime: %d is a divisor" % (x, i)
-            )  # Print formatted text "%d %s %f %e" % (20,"30",0.0003,0.00003)
-
-            return False
-    print("%d is a prime!" % x)
-    return True
-
-
-def find_all_primes(x=22):
-    """Find all the primes up to x"""
-    allprimes = []
-    for i in range(2, x + 1):
-        if is_prime(i):
-            allprimes.append(i)
-    print("There are %d primes between 2 and %d" % (len(allprimes), x))
-    return allprimes
-
-
-# def main(argv):
-#     # sys.exit("don't want to do this right now!")
-#     print(even_or_odd(22))
-#     print(even_or_odd(33))
-#     print(largest_divisor_five(120))
-#     print(largest_divisor_five(121))
-#     print(is_prime(60))
-#     print(is_prime(59))
-#     print(find_all_primes(100))
-#     return 0
-
-
-# if __name__ == "__main__":
-#     status = main(sys.argv)
-#     sys.exit(status)
+# An empty collection contains no values above the threshold.
+assert count_above([], 10) == 0
