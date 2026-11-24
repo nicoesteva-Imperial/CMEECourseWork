@@ -1,4 +1,4 @@
-""" "A first example of saving and running Python code"""
+"""A first example of saving and running Python code"""
 
 
 def square(x):
