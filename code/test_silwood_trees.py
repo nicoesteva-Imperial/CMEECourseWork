@@ -1,9 +1,17 @@
 """Simple tests for clean_silwood_trees.py"""
 
+import csv
+import tempfile
+from pathlib import Path
+
 from clean_silwood_trees import (
     validate_record,
     process_records,
     summarise_oaks,
+    write_csv,
+    ISSUE_FIELDS,
+    OAK_COUNT_FIELDS,
+    INPUT_FIELDS,
 )
 
 
@@ -122,8 +130,58 @@ def test_summarise_oaks():
     assert summarise_oaks(no_oaks) == []
 
 
+def test_written_tables():
+    """Check the end-to-end partition and all three CSV headers."""
+    rows = [
+        {
+            "record_id": "ST001",
+            "location": "manor house",
+            "genus": "QUERCUS",
+            "species": "robur",
+            "distance_m": "10",
+            "angle_degrees": "45",
+        },
+        {
+            "record_id": "ST002",
+            "location": "manor house",
+            "genus": "Quercus",
+            "species": "pendula",
+            "distance_m": "10",
+            "angle_degrees": "45",
+        },
+    ]
+    cleaned, issues = process_records(rows)
+    oak_counts = summarise_oaks(cleaned)
+
+    assert [row["record_id"] for row in cleaned] == ["ST001"]
+    assert issues[0]["reasons"] == "invalid genus/species combination"
+    assert oak_counts == [{"species": "robur", "count": "1"}]
+
+    with tempfile.TemporaryDirectory() as directory:
+        output = Path(directory)
+        for filename, fields, data in (
+            ("clean.csv", INPUT_FIELDS, cleaned),
+            ("issues.csv", ISSUE_FIELDS, issues),
+            ("oaks.csv", OAK_COUNT_FIELDS, oak_counts),
+        ):
+            path = output / filename
+            write_csv(path, fields, data)
+            with path.open(newline="", encoding="utf-8") as source:
+                reader = csv.DictReader(source)
+                assert reader.fieldnames == fields
+                written = list(reader)
+                if filename == "clean.csv":
+                    assert [row["record_id"] for row in written] == ["ST001"]
+                elif filename == "issues.csv":
+                    assert written[0]["source_row"] == "3"
+                    assert written[0]["reasons"] == "invalid genus/species combination"
+                else:
+                    assert written == [{"species": "robur", "count": "1"}]
+
+
 if __name__ == "__main__":
     test_validate_record()
     test_process_records()
     test_summarise_oaks()
+    test_written_tables()
     print("All tests passed")

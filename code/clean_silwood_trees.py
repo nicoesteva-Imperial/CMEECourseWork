@@ -217,11 +217,16 @@ def write_csv(
     rows: Iterable[dict[str, str]],
 ) -> None:
     """Write rows to a CSV file, replacing an older copy."""
-    path.parent.mkdir(parents=True, exist_ok=True)
-    with path.open("w", newline="", encoding="utf-8") as destination:
-        writer = csv.DictWriter(destination, fieldnames=fieldnames)
-        writer.writeheader()
-        writer.writerows(rows)
+    try:
+        path.parent.mkdir(parents=True, exist_ok=True)
+        with path.open("w", newline="", encoding="utf-8") as destination:
+            writer = csv.DictWriter(destination, fieldnames=fieldnames)
+            writer.writeheader()
+            writer.writerows(rows)
+    except OSError as error:
+        raise OSError(
+            f"Could not create or write output file '{path}': {error}"
+        ) from error
 
 
 def main() -> None:
