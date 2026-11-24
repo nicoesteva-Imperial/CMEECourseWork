@@ -67,7 +67,7 @@ if (any(is.na(MyWrangledData$Count))) {
 }
 
 if (any(MyWrangledData$Count < 0)) {
-    stop("Count conatins negative value")
+    stop("Count contains negative values")
 }
 
 # How many species, quadrats, and plots?
@@ -75,7 +75,7 @@ n_species <- n_distinct(MyWrangledData$Species)
 n_quadrats <- nrow(distinct(MyWrangledData, Cultivation, Block, Plot, Quadrat))
 n_plots <- nrow(distinct(MyWrangledData, Cultivation, Block, Plot))
 
-cat("Species:", n_species, "Quadrats:", n_quadrats, "Plots:", n_plots, "/n")
+cat("Species:", n_species, "Quadrats:", n_quadrats, "Plots:", n_plots, "\n")
 
 # richness per quadrat (which is identified by all four labels together)
 # richness is defined as the number of species with Count > 0 
