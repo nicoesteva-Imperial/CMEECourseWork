@@ -1,19 +1,37 @@
 #!/bin/bash
 
-# TODO 1: exactly THREE arguments (input1 input2 output).
-#   Same block as CountLines.sh, but test  $# -ne 3
-#   message:  Usage: %s <input1> <input2> <output>
+# Check that exactly three arguments are provided.
 
-# TODO 2: BOTH inputs must be readable files.
-#   Copy your CountLines.sh file check TWICE: once for "$1", once for "$2".
+if [[ $# -ne 3 ]]; then
+    printf "Usage: %s <input1> <input2> <output>\n" "$0" >&2
+    exit 2
+fi
 
-# TODO 3: the output must not be one of the inputs (the notes warn that
-#   cat "$1" > "$3" empties the file BEFORE reading it, destroying data).
-#   test:  [[ "$3" == "$1" || "$3" == "$2" ]]
-#   message idea:  Error: output '%s' must differ from both inputs
-#   exit 1
+# Check that the first input is a readable regular file.
+
+if [[ ! -f "$1" || ! -r "$1" ]]; then
+    printf "Error: '%s' is missing, not a file or not readable\n" "$1" >&2
+    exit 1
+fi
+
+# Check that the second input is a readable regular file.
+
+if [[ ! -f "$2" || ! -r "$2" ]]; then
+    printf "Error: '%s' is missing, not a file or not readable\n" "$2" >&2
+    exit 1
+fi
+
+# Check that the output is not the same file as either input.
+
+if [[ "$3" -ef "$1" || "$3" -ef "$2" ]]; then
+    printf "Error: output '%s' must differ from both inputs\n" "$3" >&2
+    exit 1
+fi
+
+# Merge the two input files into the output file.
 
 cat "$1" > "$3"
 cat "$2" >> "$3"
+
 echo "Merged File is"
 cat "$3"
