@@ -273,7 +273,7 @@ where a script explicitly operates on files in its current directory.
 | `code/preallocate.R` | Compares growing and preallocated vectors; no input → values, object sizes and timings. | `Rscript code/preallocate.R` |
 | `code/Vectorize1.R` | Compares nested-loop summation with vectorized `sum()` on a random matrix; no input → timings. | `Rscript code/Vectorize1.R` |
 | `code/try.R` | Demonstrates caught errors using repeated random samples; no input → sample means and caught-error messages. | `Rscript code/try.R` |
-| `code/browse.R` | Interactive exponential-growth example with a `browser()` breakpoint; no file input → inspect values in the debugger, then a plot. | Start R with `R`; enter `source("code/browse.R")`; inspect `N[t]` and `N[t-1]` at a breakpoint, check the recurrence `N[t] = N[t-1] * exp(r)`, then type `c` to continue. |
+| `code/browse.R` | Interactive exponential-growth example with a `browser()` breakpoint; no file input → inspect values in the debugger, then a plot. | Start R with `R`; enter `source("code/browse.R")`; inspect `N[t]` and `N[t-1]` at a breakpoint, check the recurrence `N[t] = N[t-1] * exp(r)`, then type `c` to continue (the breakpoint stops 9 times, once per generation; type `Q` to quit early). |
 | `code/buggy_function.R` | Defines a deliberately broken function that references `unknown_variable`; sourcing only defines it, calling it demonstrates an R error. | Define only: `Rscript code/buggy_function.R`. To demonstrate the error: `Rscript -e 'source("code/buggy_function.R"); buggy_function(1)'` (expected failure). |
 
 `tiff2_png.sh` is the only listed utility that depends on files not supplied in
@@ -344,5 +344,4 @@ Changes made in response to formative feedback and checked:
   observation and tidy-data practice; the functions, outputs and checks were
   tested from the project root against the supplied fixtures.
 - **Copilot in VS Code, 24 November 2026:** used in this task to inventory the
-  repository, compare it with the assignment briefs and formative feedback. File paths and commands were checked against the
-  source and the focused test commands; no program code was changed.
+  repository, compare it with the assignment briefs and formative feedback. File paths and commands were checked against the source and the focused test commands; no program code was changed.
