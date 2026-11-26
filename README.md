@@ -75,10 +75,6 @@ belong in the sandbox. Generated files are not part of a fresh clone.
     ├── bootcamp_observations.csv
     ├── bootcamp_observations_boundary.csv
     ├── bootcamp_observations_invalid.csv
-    ├── bootcamp_observations/
-    │   ├── bootcamp_observations.csv
-    │   ├── bootcamp_observations_boundary.csv
-    │   └── bootcamp_observations_invalid.csv
     ├── ecol_archives_e_089_51_d_1.csv
     ├── fasta/
     │   ├── 407228326.fasta
@@ -121,10 +117,6 @@ belong in the sandbox. Generated files are not part of a fresh clone.
 - `data/bootcamp_observations.csv`, `data/bootcamp_observations_boundary.csv`
   and `data/bootcamp_observations_invalid.csv` are the ordinary, boundary and
   invalid observation examples used by the practice scripts.
-- `data/bootcamp_observations/bootcamp_observations.csv`,
-  `data/bootcamp_observations/bootcamp_observations_boundary.csv` and
-  `data/bootcamp_observations/bootcamp_observations_invalid.csv` are the
-  corresponding nested copies; the scripts use the top-level files.
 - `data/resource.csv` contains resource records loaded into SQLite by
   `sql_in_r.R`.
 - `data/ecol_archives_e_089_51_d_1.csv` contains predator–prey interaction
